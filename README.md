@@ -1,5 +1,5 @@
 # TimeSeries
-COMP-5331@HKUST project
+COMP-5331@HKUST project, which refers to part of the implementation details of the [repo](https://github.com/thuml/Autoformer/tree/main).
 
 ## Introduction
 
