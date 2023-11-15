@@ -16,7 +16,7 @@ pip install -r requirements.txt
 3. Unzip the dataset.
 
 ```
-unzip ./src/DeepLearning/dataset.zip ./src/DeepLearning/
+unzip ./src/DeepLearning/dataset.zip -d ./src/DeepLearning/
 ```
 
 4. Modify the hyperparameter in "param.csv".
