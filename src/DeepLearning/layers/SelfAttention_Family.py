@@ -8,7 +8,7 @@ import numpy as np
 import math
 from math import sqrt
 from utils.masking import TriangularCausalMask, ProbMask
-from reformer_pytorch import LSHSelfAttention
+# from reformer_pytorch import LSHSelfAttention
 import os
 
 
@@ -167,7 +167,7 @@ class AttentionLayer(nn.Module):
         return self.out_projection(out), attn
 
 
-class ReformerLayer(nn.Module):
+"""class ReformerLayer(nn.Module):
     def __init__(self, attention, d_model, n_heads, d_keys=None,
                  d_values=None, causal=False, bucket_size=4, n_hashes=4):
         super().__init__()
@@ -194,4 +194,4 @@ class ReformerLayer(nn.Module):
         # in Reformer: defalut queries=keys
         B, N, C = queries.shape
         queries = self.attn(self.fit_length(queries))[:, :N, :]
-        return queries, None
+        return queries, None"""
