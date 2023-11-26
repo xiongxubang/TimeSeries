@@ -5,7 +5,7 @@ logging.basicConfig(format='%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)
 
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
-from models import Informer, Autoformer, Transformer, Reformer, Rnn, Lstm, Gru, RnnAttn, LstmAttn, GruAttn
+from models import Informer, Autoformer, Transformer, Rnn, Lstm, Gru, RnnAttn, LstmAttn, GruAttn
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
 from utils.metrics import metric
 
@@ -33,7 +33,6 @@ class Exp_Main(Exp_Basic):
             'Autoformer': Autoformer,
             'Transformer': Transformer,
             'Informer': Informer,
-            'Reformer': Reformer,
             'Rnn' : Rnn,
             'Lstm' : Lstm,
             'Gru' : Gru,
