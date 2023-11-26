@@ -246,16 +246,18 @@ class Exp_Main(Exp_Basic):
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-        """mae, mse, rmse, mape, mspe = metric(preds, trues)
-        print('mse:{}, mae:{}'.format(mse, mae))"""
+        print("directly output:")
+        mae, mse, rmse, mape, mspe = metric(preds, trues)
+        print('mse:{}, mae:{}'.format(mse, mae))
         if test_data.scale:
             preds = preds.reshape(-1, preds.shape[-1])
             trues = trues.reshape(-1, trues.shape[-1])   
             preds = test_data.inverse_transform(preds)
             trues = test_data.inverse_transform(trues)          
-
-        mae, mse, rmse, mape, mspe = metric(preds, trues)
-        print('mse:{}, mae:{}'.format(mse, mae))
+            print("inverse_transform:")
+            mae, mse, rmse, mape, mspe = metric(preds, trues)
+            print('mse:{}, mae:{}'.format(mse, mae))
+        
         f = open("result.txt", 'a')
         f.write(setting + "  \n")
         f.write('mse:{}, mae:{}'.format(mse, mae))
