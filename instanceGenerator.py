@@ -62,13 +62,15 @@ def createSH(cfg):
         "exchange_rate":"exchange_rate",
         "national_illness":"illness",
         "traffic":"traffic",
+        "traffic_short":"traffic_short",
+        "traffic_long":"traffic_long",
         "weather":"weather"
     }
     data = 'custom'
     if dataset[cfg.dataset] == "ETT-small":
         data = cfg.dataset
     features = "M"
-    if cfg.dataset == "exchange_rate":
+    if cfg.dataset == "exchange_rate" or cfg.dataset == "traffic_short" or cfg.dataset == "traffic_long":
         features = "S"
     Hyparam = {
         "ETTh1":(2,1,3,7,7,7),
@@ -79,6 +81,8 @@ def createSH(cfg):
         "exchange_rate":(2,1,3,8,8,8),
         "national_illness":(2,1,3,7,7,7),
         "traffic":(2,1,3,862,862,862),
+        "traffic_short":(2,1,3,1,1,1),
+        "traffic_long":(2,1,3,1,1,1),
         "weather":(2,1,3,21,21,21)
     }
     os.system("ln -sf ../src ./src")

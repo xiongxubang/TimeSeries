@@ -5,7 +5,7 @@ logging.basicConfig(format='%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)
 
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
-from models import Informer, Autoformer, Transformer, Rnn, Lstm, Gru
+from models import Informer, Autoformer, Transformer, Reformer, Rnn, Lstm, Gru, RnnAttn, LstmAttn, GruAttn
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
 from utils.metrics import metric
 
@@ -33,9 +33,13 @@ class Exp_Main(Exp_Basic):
             'Autoformer': Autoformer,
             'Transformer': Transformer,
             'Informer': Informer,
+            'Reformer': Reformer,
             'Rnn' : Rnn,
             'Lstm' : Lstm,
             'Gru' : Gru,
+            'RnnAttn' : RnnAttn,
+            'LstmAttn' : LstmAttn,
+            'GruAttn' : GruAttn,
         }
         model = model_dict[self.args.model].Model(self.args).float()
 
@@ -210,12 +214,24 @@ class Exp_Main(Exp_Basic):
                 pred = outputs  # outputs.detach().cpu().numpy()  # .squeeze()
                 true = batch_y  # batch_y.detach().cpu().numpy()  # .squeeze()
 
+                """if self.args.data_path == "traffic_short.csv" or self.args.data == "traffic_long.csv":
+                    pred = pred.reshape(-1,1)
+                    true = true.reshape(-1,1)
+                    pred = test_data.inverse_transform(pred)
+                    true = test_data.inverse_transform(true)"""
+                    
+
                 preds.append(pred)
                 trues.append(true)
-                if i % 20 == 0:
+                if i % 20 == 0 or i == len(test_loader):
                     input = batch_x.detach().cpu().numpy()
                     gt = np.concatenate((input[0, :, -1], true[0, :, -1]), axis=0)
                     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
+                    if test_data.scale:
+                        gt = gt.reshape(-1,1)
+                        pd = pd.reshape(-1,1)
+                        gt = test_data.inverse_transform(gt)
+                        pd = test_data.inverse_transform(pd)
                     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
 
         preds = np.concatenate(preds, axis=0)
@@ -229,6 +245,14 @@ class Exp_Main(Exp_Basic):
         folder_path = './results/' + setting + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
+
+        """mae, mse, rmse, mape, mspe = metric(preds, trues)
+        print('mse:{}, mae:{}'.format(mse, mae))"""
+        if test_data.scale:
+            preds = preds.reshape(-1, preds.shape[-1])
+            trues = trues.reshape(-1, trues.shape[-1])   
+            preds = test_data.inverse_transform(preds)
+            trues = test_data.inverse_transform(trues)          
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         print('mse:{}, mae:{}'.format(mse, mae))

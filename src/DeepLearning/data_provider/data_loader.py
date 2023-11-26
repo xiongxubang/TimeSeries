@@ -231,9 +231,15 @@ class Dataset_Custom(Dataset):
         cols.remove('date')
         df_raw = df_raw[['date'] + cols + [self.target]]
         # print(cols)
-        num_train = int(len(df_raw) * 0.7)
-        num_test = int(len(df_raw) * 0.2)
-        num_vali = len(df_raw) - num_train - num_test
+        if self.data_path == "traffic_short.csv" or self.data_path == "traffic_long.csv":
+            num_test = self.pred_len
+            num_train = int((len(df_raw) - num_test)*0.8)
+            num_vali = len(df_raw) - num_train - num_test
+        else:
+            num_train = int(len(df_raw) * 0.7)
+            num_test = int(len(df_raw) * 0.2)
+            num_vali = len(df_raw) - num_train - num_test
+
         border1s = [0, num_train - self.seq_len, len(df_raw) - num_test - self.seq_len]
         border2s = [num_train, num_train + num_vali, len(df_raw)]
         border1 = border1s[self.set_type]
@@ -267,6 +273,7 @@ class Dataset_Custom(Dataset):
         self.data_x = data[border1:border2]
         self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
+
 
     def __getitem__(self, index):
         s_begin = index
@@ -320,6 +327,7 @@ class Dataset_Pred(Dataset):
         self.scaler = StandardScaler()
         df_raw = pd.read_csv(os.path.join(self.root_path,
                                           self.data_path))
+        
         '''
         df_raw.columns: ['date', ...(other features), target feature]
         '''

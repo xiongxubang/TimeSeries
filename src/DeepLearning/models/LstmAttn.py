@@ -2,8 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from layers.Rnn_EncDec import Seq2SeqEncoder, Seq2SeqDecoder, EncoderDecoder
-from layers.SelfAttention_Family import FullAttention, AttentionLayer
+from layers.Rnn_EncDec import Seq2SeqEncoder, Seq2SeqAttentionDecoder
 from layers.Embed import DataEmbedding
 
 
@@ -18,7 +17,7 @@ class Model(nn.Module):
         self.dec_embedding = DataEmbedding(configs.dec_in, configs.d_model, configs.embed, configs.freq,
                                            configs.dropout)
         self.encoder = Seq2SeqEncoder(configs.d_model, num_hiddens=configs.d_model, num_layers=configs.e_layers, rnn_model=nn.LSTM)
-        self.decoder = Seq2SeqDecoder(configs.d_model, num_hiddens=configs.d_model, num_layers=configs.e_layers, rnn_model=nn.LSTM, c_out=configs.c_out)
+        self.decoder = Seq2SeqAttentionDecoder(configs.d_model, num_hiddens=configs.d_model, num_layers=configs.e_layers, rnn_model=nn.LSTM, c_out=configs.c_out)
         
 
     

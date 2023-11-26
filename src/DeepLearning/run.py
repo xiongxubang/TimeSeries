@@ -57,7 +57,7 @@ def main():
                         help='time features encoding, options:[timeF, fixed, learned]')
     parser.add_argument('--activation', type=str, default='gelu', help='activation')
     parser.add_argument('--output_attention', action='store_true', help='whether to output attention in encoder')
-    parser.add_argument('--do_predict', action='store_true', help='whether to predict unseen future data')
+    parser.add_argument('--do_predict', action='store_true', help='whether to predict unseen future data')  # default false
 
     # optimization
     parser.add_argument('--num_workers', type=int, default=10, help='data loader num workers')
@@ -79,15 +79,14 @@ def main():
 
     args = parser.parse_args()
 
-    # print(torch.cuda.device_count())
-    # print(torch.cuda.is_available()) 
-    """args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
+
+    args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
 
     if args.use_gpu and args.use_multi_gpu:
         args.devices = args.devices.replace(' ', '')
         device_ids = args.devices.split(',')
         args.device_ids = [int(id_) for id_ in device_ids]
-        args.gpu = args.device_ids[0]"""
+        args.gpu = args.device_ids[0]
     
     print('Args in experiment:')
     print(args)
