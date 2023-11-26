@@ -211,26 +211,31 @@ class Exp_Main(Exp_Basic):
                 batch_y = batch_y.detach().cpu().numpy()
 
                 pred = outputs  # outputs.detach().cpu().numpy()  # .squeeze()
-                true = batch_y  # batch_y.detach().cpu().numpy()  # .squeeze()
-
-                """if self.args.data_path == "traffic_short.csv" or self.args.data == "traffic_long.csv":
-                    pred = pred.reshape(-1,1)
-                    true = true.reshape(-1,1)
-                    pred = test_data.inverse_transform(pred)
-                    true = test_data.inverse_transform(true)"""
-                    
+                true = batch_y  # batch_y.detach().cpu().numpy()  # .squeeze()  
 
                 preds.append(pred)
                 trues.append(true)
                 if i % 20 == 0 or i == len(test_loader):
                     input = batch_x.detach().cpu().numpy()
-                    gt = np.concatenate((input[0, :, -1], true[0, :, -1]), axis=0)
-                    pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
-                    if test_data.scale:
+                    """if test_data.scale:
                         gt = gt.reshape(-1,gt.shape[-1])
                         pd = pd.reshape(-1,pd.shape[-1])
                         gt = test_data.inverse_transform(gt)
-                        pd = test_data.inverse_transform(pd)
+                        pd = test_data.inverse_transform(pd)""" 
+                    
+                    if test_data.scale:
+                        input = input.reshape(-1, input.shape[-1])
+                        true = true.reshape(-1, true.shape[-1])
+                        pred = pred.reshape(-1, pred.shape[-1])
+                        input =  test_data.inverse_transform(input)
+                        true =  test_data.inverse_transform(true)
+                        pred =  test_data.inverse_transform(pred)
+                        input = input.reshape(self.args.batch_size, -1, input.shape[-1])
+                        true = true.reshape(self.args.batch_size,-1, true.shape[-1])
+                        pred = pred.reshape(self.args.batch_size,-1, pred.shape[-1])
+
+                    gt = np.concatenate((input[0, :, -1], true[0, :, -1]), axis=0)
+                    pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
                     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
 
         preds = np.concatenate(preds, axis=0)
