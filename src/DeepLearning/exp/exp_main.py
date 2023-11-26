@@ -227,8 +227,8 @@ class Exp_Main(Exp_Basic):
                     gt = np.concatenate((input[0, :, -1], true[0, :, -1]), axis=0)
                     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
                     if test_data.scale:
-                        gt = gt.reshape(-1,1)
-                        pd = pd.reshape(-1,1)
+                        gt = gt.reshape(-1,gt.shape[-1])
+                        pd = pd.reshape(-1,pd.shape[-1])
                         gt = test_data.inverse_transform(gt)
                         pd = test_data.inverse_transform(pd)
                     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
