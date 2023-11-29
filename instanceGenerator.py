@@ -64,7 +64,11 @@ def createSH(cfg):
         "traffic":"traffic",
         "traffic_short":"traffic_short",
         "traffic_long":"traffic_long",
-        "weather":"weather"
+        "weather":"weather",
+        "weather_train_test":"weather_train_test",
+        "elec_train_test":"elec_train_test",
+        "elec_train_test_full":"elec_train_test_full",
+        
     }
     data = 'custom'
     if dataset[cfg.dataset] == "ETT-small":
@@ -83,7 +87,10 @@ def createSH(cfg):
         "traffic":(2,1,3,862,862,862),
         "traffic_short":(2,1,3,1,1,1),
         "traffic_long":(2,1,3,1,1,1),
-        "weather":(2,1,3,21,21,21)
+        "weather":(2,1,3,21,21,21),
+        "weather_train_test":(2,1,3,1,1,1),
+        "elec_train_test":(2,1,3,1,1,1),
+        "elec_train_test_full":(2,1,3,1,1,1),
     }
     os.system("ln -sf ../src ./src")
     os.system("touch ./output.txt")
