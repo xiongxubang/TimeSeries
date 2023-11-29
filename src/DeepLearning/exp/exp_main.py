@@ -6,7 +6,7 @@ logging.basicConfig(format='%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
 from models import Informer, Autoformer, Transformer, Rnn, Lstm, Gru, RnnAttn, LstmAttn, GruAttn
-from utils.tools import EarlyStopping, adjust_learning_rate, visual
+from utils.tools import EarlyStopping, adjust_learning_rate, visual, savePred
 from utils.metrics import metric
 
 import numpy as np
@@ -101,6 +101,17 @@ class Exp_Main(Exp_Basic):
 
                 pred = outputs.detach().cpu()
                 true = batch_y.detach().cpu()
+
+                if vali_data.scale:
+                    batch_size = true.shape[0]
+                    true = true.reshape(-1, true.shape[-1])
+                    pred = pred.reshape(-1, pred.shape[-1])
+                    true =  vali_data.inverse_transform(true)
+                    pred =  vali_data.inverse_transform(pred)
+                    true = true.reshape(batch_size,-1, true.shape[-1])
+                    pred = pred.reshape(batch_size,-1, pred.shape[-1])
+                    true = torch.tensor(true)
+                    pred = torch.tensor(pred)
 
                 loss = criterion(pred, true)
 
@@ -222,7 +233,7 @@ class Exp_Main(Exp_Basic):
                         pd = pd.reshape(-1,pd.shape[-1])
                         gt = test_data.inverse_transform(gt)
                         pd = test_data.inverse_transform(pd)""" 
-                    
+                    batch_size = input.shape[0]
                     if test_data.scale:
                         input = input.reshape(-1, input.shape[-1])
                         true = true.reshape(-1, true.shape[-1])
@@ -230,13 +241,15 @@ class Exp_Main(Exp_Basic):
                         input =  test_data.inverse_transform(input)
                         true =  test_data.inverse_transform(true)
                         pred =  test_data.inverse_transform(pred)
-                        input = input.reshape(self.args.batch_size, -1, input.shape[-1])
-                        true = true.reshape(self.args.batch_size,-1, true.shape[-1])
-                        pred = pred.reshape(self.args.batch_size,-1, pred.shape[-1])
+                        input = input.reshape(batch_size, -1, input.shape[-1])
+                        true = true.reshape(batch_size,-1, true.shape[-1])
+                        pred = pred.reshape(batch_size,-1, pred.shape[-1])
 
                     gt = np.concatenate((input[0, :, -1], true[0, :, -1]), axis=0)
                     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
                     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
+                    savePred(true[0, :, -1],pred[0, :, -1],os.path.join(folder_path, str(i) + '.csv'))
+
 
         preds = np.concatenate(preds, axis=0)
         trues = np.concatenate(trues, axis=0)

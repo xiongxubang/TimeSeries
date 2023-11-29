@@ -10,6 +10,23 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+myDataset = ["traffic_short.csv", "traffic_long.csv", "weather_train_test.csv", "elec_train_test.csv"]
+myTrainLength = {
+    "traffic_short.csv":500,
+    "traffic_long.csv":8400,
+    "weather_train_test.csv":5000,
+    "elec_train_test.csv":5000,
+    "elec_train_test_full.csv":25584,
+}
+
+myTestLength = {
+    "traffic_short.csv":96,
+    "traffic_long.csv":720,
+    "weather_train_test.csv":720,
+    "elec_train_test.csv":720,
+    "elec_train_test_full.csv":720,
+}
+
 
 class Dataset_ETT_hour(Dataset):
     def __init__(self, root_path, flag='train', size=None,
@@ -231,7 +248,8 @@ class Dataset_Custom(Dataset):
         cols.remove('date')
         df_raw = df_raw[['date'] + cols + [self.target]]
         # print(cols)
-        if self.data_path == "traffic_short.csv" or self.data_path == "traffic_long.csv":
+        if self.data_path in myDataset:
+            df_raw = df_raw.iloc[0:int(self.pred_len-1-myTestLength[self.data_path])]
             num_test = self.pred_len
             num_train = int((len(df_raw) - num_test)*0.8)
             num_vali = len(df_raw) - num_train - num_test

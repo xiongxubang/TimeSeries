@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import torch
 import matplotlib.pyplot as plt
 
@@ -83,3 +84,16 @@ def visual(true, preds=None, name='./pic/test.pdf'):
         plt.plot(preds, label='Prediction', linewidth=2)
     plt.legend()
     plt.savefig(name, bbox_inches='tight')
+
+def savePred(true, preds=None, name='./pic/test.csv'):
+    """
+    Results saving
+    """
+    data = {
+        "true":true
+    }
+    if preds is not None:
+        data["preds"]=preds
+
+    df = pd.DataFrame(data)
+    df.to_csv(name)    
