@@ -17,7 +17,7 @@ myTrainLength = {
     "weather_train_test.csv":5000,
     "elec_train_test.csv":5000,
     "elec_train_test_full.csv":25584,
-    "elec_train_test_full_last":5000,
+    "elec_train_test_full_last.csv":5000,
 }
 
 myTestLength = {
@@ -26,7 +26,7 @@ myTestLength = {
     "weather_train_test.csv":720,
     "elec_train_test.csv":720,
     "elec_train_test_full.csv":720,
-    "elec_train_test_full_last":720,
+    "elec_train_test_full_last.csv":720,
 }
 
 
