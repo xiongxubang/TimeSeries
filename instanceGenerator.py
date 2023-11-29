@@ -68,6 +68,7 @@ def createSH(cfg):
         "weather_train_test":"weather_train_test",
         "elec_train_test":"elec_train_test",
         "elec_train_test_full":"elec_train_test_full",
+        "elec_train_test_full_last":"elec_train_test_full_last",
         
     }
     data = 'custom'
@@ -91,6 +92,7 @@ def createSH(cfg):
         "weather_train_test":(2,1,3,1,1,1),
         "elec_train_test":(2,1,3,1,1,1),
         "elec_train_test_full":(2,1,3,1,1,1),
+        "elec_train_test_full_last":(2,1,3,1,1,1),
     }
     os.system("ln -sf ../src ./src")
     os.system("touch ./output.txt")

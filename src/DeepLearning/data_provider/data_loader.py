@@ -10,13 +10,14 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-myDataset = ["traffic_short.csv", "traffic_long.csv", "weather_train_test.csv", "elec_train_test.csv", "elec_train_test_full.csv"]
+myDataset = ["traffic_short.csv", "traffic_long.csv", "weather_train_test.csv", "elec_train_test.csv", "elec_train_test_full.csv", "elec_train_test_full_last"]
 myTrainLength = {
     "traffic_short.csv":500,
     "traffic_long.csv":8400,
     "weather_train_test.csv":5000,
     "elec_train_test.csv":5000,
     "elec_train_test_full.csv":25584,
+    "elec_train_test_full_last":5000,
 }
 
 myTestLength = {
@@ -25,6 +26,7 @@ myTestLength = {
     "weather_train_test.csv":720,
     "elec_train_test.csv":720,
     "elec_train_test_full.csv":720,
+    "elec_train_test_full_last":720,
 }
 
 
